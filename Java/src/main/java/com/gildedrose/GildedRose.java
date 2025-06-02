@@ -14,6 +14,10 @@ class GildedRose {
         this.items = Arrays.asList(items);
     }
 
+    public GildedRose(List<Item> items) {
+        this.items = items;
+    }
+
     public void updateQuality() {
         for (Item item : items) {
             TypedItem typedItem = ItemTypeMapper.map(item);
