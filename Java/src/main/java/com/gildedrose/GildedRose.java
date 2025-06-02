@@ -16,7 +16,8 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            ItemBehavior behavior = resolver.resolve(item);
+            TypedItem typedItem = ItemTypeMapper.map(item);
+            ItemBehavior behavior = resolver.resolve(typedItem);
             behavior.update(item);
         }
     }

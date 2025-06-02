@@ -1,24 +1,23 @@
 package com.gildedrose.behavior;
 
-import com.gildedrose.Item;
+import com.gildedrose.ItemType;
+import com.gildedrose.TypedItem;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class ItemBehaviorResolver {
-    private static final Map<String, ItemBehavior> behaviorMap = new HashMap<>();
-    private static final ItemBehavior defaultBehavior = new StandardBehavior();
+    private final Map<ItemType, ItemBehavior> behaviorMap = new EnumMap<>(ItemType.class);
 
-    static {
-        behaviorMap.put("Aged Brie", new AgedBrieBehavior());
-        behaviorMap.put("Backstage passes to a TAFKAL80ETC concert", new BackstagePassBehavior());
-        behaviorMap.put("Sulfuras, Hand of Ragnaros", new SulfurasBehavior());
+    public ItemBehaviorResolver() {
+        behaviorMap.put(ItemType.AGED_BRIE, new AgedBrieBehavior());
+        behaviorMap.put(ItemType.BACKSTAGE_PASS, new BackstagePassBehavior());
+        behaviorMap.put(ItemType.SULFURAS, new SulfurasBehavior());
+        behaviorMap.put(ItemType.CONJURED, new ConjuredBehavior());
+        behaviorMap.put(ItemType.STANDARD, new StandardBehavior()); // fallback
     }
 
-    public ItemBehavior resolve(Item item) {
-        if (item.name != null && item.name.toLowerCase().contains("conjured")) {
-            return new ConjuredBehavior();
-        }
-        return behaviorMap.getOrDefault(item.name, defaultBehavior);
+    public ItemBehavior resolve(TypedItem typedItem) {
+        return behaviorMap.getOrDefault(typedItem.getType(), new StandardBehavior());
     }
 }
